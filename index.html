@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pastries - Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --primary: #8aa8f5;
+  --primary-dark: #6b8de0;
+  --accent: #fcc348;
+  --accent-light: #f5c581;
+  --bg-warm: #fef9f3;
+  --text-dark: #1a1a2e;
+  --text-light: #4a4a68;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.16);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== RESET & BASE ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("background.jpg") center/cover no-repeat fixed;
+  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== HIDE HELPERS ===== */
+.hidden-ui {
+  display: none !important;
+}
+
+/* ===== NICO SPECIAL SCREEN ===== */
+.special-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  background: url("background.jpg") center/cover no-repeat;
+}
+
+.special-screen.show-special {
+  display: block;
+}
+
+/* ===== LOCK SCREEN ===== */
+.lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+}
+
+.lock-screen.hidden {
+  display: none;
+}
+
+.lock-box {
+  width: 460px;
+  max-width: 92vw;
+  padding: 32px 28px;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.95);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.lock-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.lock-subtitle {
+  font-size: 15px;
+  color: var(--text-light);
+  margin-bottom: 22px;
+}
+
+.lock-input {
+  width: 100%;
+  height: 56px;
+  border: 2px solid rgba(0,0,0,0.12);
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 14px;
+}
+
+.lock-input:focus {
+  border-color: var(--primary);
+}
+
+.lock-btn {
+  width: 100%;
+  height: 56px;
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+.lock-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.lock-error {
+  min-height: 22px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #d62828;
+}
+
+/* ===== MENU BOX ===== */
+.box {
+  width: 600px;
+  height: 860px;
+  max-width: 90vw;
+  max-height: 95vh;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text {
+  margin-top: 100px;
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  padding: 40px 30px;
+  background: url("Pastries.jpg") center/cover no-repeat;
+  border-radius: var(--radius-lg);
+  border: 3px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
+  z-index: 1;
+}
+
+.text::after {
+  content: 'The Pastries';
+  position: relative;
+  z-index: 2;
+}
+
+.button-area {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+button {
+  width: 320px;
+  height: 60px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+/* ===== MAIN BOX ===== */
+.main-box {
+  width: 1000px;
+  height: 860px;
+  max-width: 95vw;
+  max-height: 95vh;
+  background: url("main background.jpg") center/cover no-repeat;
+  border-radius: var(--radius-lg);
+  border: 2px solid rgba(255,255,255,0.2);
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(20px);
+}
+
+.main-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+/* ===== WHITE BOX ===== */
+.white-box {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  border: 2px solid rgba(0,0,0,0.1);
+}
+
+.white-box::before {
+  display: none;
+}
+
+/* ===== FOLDER LAYOUT ===== */
+.folder-area {
+  margin-top: 180px;
+  margin-left: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  width: 75%;
+  position: relative;
+  z-index: 2;
+}
+
+.folder {
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 20px;
+  border-radius: var(--radius-md);
+}
+
+.folder:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+}
+
+.folder img {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  transition: var(--transition);
+}
+
+.folder:hover img {
+  transform: scale(1.1);
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+}
+
+/* ===== FOLDER LABEL ===== */
+.folder-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.9);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  display: inline-block;
+  transition: var(--transition);
+}
+
+.folder:hover .folder-label {
+  background: white;
+  box-shadow: var(--shadow-md);
+  transform: scale(1.05);
+}
+
+/* ===== FOLDER WINDOW ===== */
+.folder-window {
+  position: fixed;
+  width: 700px;
+  height: 500px;
+  max-width: 90vw;
+  max-height: 85vh;
+  background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(255,255,255,0.3);
+  display: none;
+  flex-direction: column;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.folder-header {
+  background: linear-gradient(135deg, var(--accent) 0%, #f5b041 100%);
+  padding: 16px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  color: #1a1a2e;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.close-btn:hover {
+  background: white;
+  transform: scale(1.1);
+  box-shadow: var(--shadow-md);
+}
+
+.folder-content {
+  flex: 1;
+  padding: 24px;
+  overflow: auto;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.image-grid img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  border: 2px solid rgba(255,255,255,0.5);
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.image-grid img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+  border-color: white;
+}
+
+/* ===== IMAGE VIEWER ===== */
+.image-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.92);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.image-viewer img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-btn:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.left-btn {
+  left: 30px;
+}
+
+.right-btn {
+  right: 30px;
+}
+
+/* ===== RETURN BUTTON ===== */
+.return-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 120px;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  z-index: 10;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.return-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== SHOW ANIMATION ===== */
+.show {
+  display: flex;
+  animation: expandIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes expandIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===== FOLDER OPEN ANIMATION ===== */
+.folder-window.show-folder {
+  display: flex;
+  animation: folderOpen 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes folderOpen {
+  from {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  body {
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+
+  .box {
+    width: 95vw;
+    height: auto;
+    min-height: 100vh;
+    max-height: none;
+  }
+
+  .text {
+    margin-top: 40px;
+    font-size: 48px;
+    padding: 30px 20px;
+  }
+
+  .button-area {
+    margin-top: 50px;
+    gap: 16px;
+  }
+
+  button {
+    width: 85%;
+    max-width: 280px;
+    height: 54px;
+    font-size: 16px;
+  }
+
+  .main-box {
+    width: 95vw;
+    height: 95vh;
+    max-width: 95vw;
+    max-height: 95vh;
+    border-radius: var(--radius-md);
+  }
+
+  .folder-area {
+    margin-top: 100px;
+    margin-left: 0;
+    padding: 0 20px 80px 20px;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .folder {
+    padding: 15px;
+  }
+
+  .folder img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .folder-label {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .folder-window {
+    width: 92vw;
+    height: 80vh;
+    border-radius: var(--radius-md);
+  }
+
+  .folder-header {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+
+  .folder-content {
+    padding: 16px;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .image-grid img {
+    height: 100px;
+  }
+
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  .left-btn {
+    left: 15px;
+  }
+
+  .right-btn {
+    right: 15px;
+  }
+
+  .return-btn {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    width: 100px;
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .lock-title {
+    font-size: 34px;
+  }
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.3);
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-title">Access Lock</div>
+    <div class="lock-subtitle">Enter your name to continue</div>
+    <input type="text" id="usernameInput" class="lock-input" placeholder="Enter name" autocomplete="off">
+    <button class="lock-btn" onclick="checkUsername()">Enter</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
+
+<!-- SPECIAL SCREEN FOR IAMNICO -->
+<div class="special-screen" id="specialScreen"></div>
+
+<!-- MENU -->
+<div class="box" id="menuBox">
+<div class="text"></div>
+
+<div class="button-area">
+<button onclick="openMain()">See To View</button>
+<button onclick="openWhite()">No Click me</button>
+</div>
+</div>
+
+<!-- MAIN BOX -->
+<div class="main-box" id="mainBox">
+
+<div class="folder-area">
+
+<div class="folder" onclick="openFolder(1)">
+<img src="folder.png">
+<div class="folder-label">Nico</div>
+</div>
+
+<div class="folder" onclick="openFolder(2)">
+<img src="folder.png">
+<div class="folder-label">Aaron</div>
+</div>
+
+<div class="folder" onclick="openFolder(3)">
+<img src="folder.png">
+<div class="folder-label">Lorraine</div>
+</div>
+
+<div class="folder" onclick="openFolder(4)">
+<img src="folder.png">
+<div class="folder-label">Miah</div>
+</div>
+
+<div class="folder" onclick="openFolder(5)">
+<img src="folder.png">
+<div class="folder-label">Remie</div>
+</div>
+
+<div class="folder" onclick="openFolder(6)">
+<img src="folder.png">
+<div class="folder-label">Cyrille</div>
+</div>
+
+</div>
+
+<button class="return-btn" onclick="goBack()">Return</button>
+
+</div>
+
+<!-- WHITE BOX -->
+<div class="main-box white-box" id="whiteBox">
+<button class="return-btn" onclick="closeWhite()">Return</button>
+</div>
+
+<!-- FOLDER WINDOWS -->
+
+<div class="folder-window" id="folder1">
+<div class="folder-header">Nico<button class="close-btn" onclick="closeFolder(1)">✕</button></div>
+<div class="folder-content">
+<div class="image-grid">
+<img src="nico 1.jpg" onclick="viewImage(this)">
+<img src="nico 2.jpg" onclick="viewImage(this)">
+<img src="nico 3.jpg" onclick="viewImage(this)">
+<img src="nico 4.jpg" onclick="viewImage(this)">
+<img src="nico 5.jpg" onclick="viewImage(this)">
+</div>
+</div>
+</div>
+
+<div class="folder-window" id="folder2">
+<div class="folder-header">Aaron<button class="close-btn" onclick="closeFolder(2)">✕</button></div>
+<div class="folder-content">
+<div class="image-grid">
+<img src="aaron 1.jpg" onclick="viewImage(this)">
+<img src="aaron 2.jpg" onclick="viewImage(this)">
+</div>
+</div>
+</div>
+
+<div class="folder-window" id="folder3">
+<div class="folder-header">Lorraine<button class="close-btn" onclick="closeFolder(3)">✕</button></div>
+<div class="folder-content">
+<div class="image-grid">
+<img src="lorraine 1.jpg" onclick="viewImage(this)">
+<img src="lorraine 2.jpg" onclick="viewImage(this)">
+<img src="lorraine 3.jpg" onclick="viewImage(this)">
+<img src="lorraine 4.jpg" onclick="viewImage(this)">
+<img src="lorraine 5.jpg" onclick="viewImage(this)">
+</div>
+</div>
+</div>
+
+<div class="folder-window" id="folder4">
+<div class="folder-header">Miah<button class="close-btn" onclick="closeFolder(4)">✕</button></div>
+<div class="folder-content">
+<div class="image-grid">
+<img src="miah 1.jpg" onclick="viewImage(this)">
+<img src="miah 2.jpg" onclick="viewImage(this)">
+<img src="miah 6.jpg" onclick="viewImage(this)">
+<img src="miah 4.jpg" onclick="viewImage(this)">
+<img src="miah 5.jpg" onclick="viewImage(this)">
+</div>
+</div>
+</div>
+
+<div class="folder-window" id="folder5">
+<div class="folder-header">Remie<button class="close-btn" onclick="closeFolder(5)">✕</button></div>
+<div class="folder-content">
+<div class="image-grid">
+<img src="remie 1.jpg" onclick="viewImage(this)">
+<img src="remie 2.jpg" onclick="viewImage(this)">
+<img src="remie 3.jpg" onclick="viewImage(this)">
+<img src="remie 4.jpg" onclick="viewImage(this)">
+<img src="remie 5.jpg" onclick="viewImage(this)">
+</div>
+</div>
+</div>
+
+<div class="folder-window" id="folder6">
+<div class="folder-header">Cyrille<button class="close-btn" onclick="closeFolder(6)">✕</button></div>
+<div class="folder-content">
+<div class="image-grid">
+<img src="cyrille 1.jpg" onclick="viewImage(this)">
+<img src="cyrille 2.jpg" onclick="viewImage(this)">
+<img src="cyrille 3.jpg" onclick="viewImage(this)">
+<img src="cyrille 4.jpg" onclick="viewImage(this)">
+<img src="cyrille 5.jpg" onclick="viewImage(this)">
+</div>
+</div>
+</div>
+
+<!-- IMAGE VIEWER -->
+<div class="image-viewer" id="viewer">
+<button class="nav-btn left-btn" onclick="prevImage()">❮</button>
+<img id="viewerImg">
+<button class="nav-btn right-btn" onclick="nextImage()">❯</button>
+</div>
+
+<script>
+const allowedUsers = ["miah", "cyrille", "nico", "remie", "lorraine", "aaron"];
+const specialUser = "iamnico";
+
+let currentImages = [];
+let currentIndex = 0;
+
+function showNormalMode(){
+  document.getElementById("menuBox").classList.remove("hidden-ui");
+  document.getElementById("specialScreen").classList.remove("show-special");
+}
+
+function showSpecialMode(){
+  document.getElementById("menuBox").classList.add("hidden-ui");
+  document.getElementById("mainBox").classList.remove("show");
+  document.getElementById("whiteBox").classList.remove("show");
+  document.getElementById("specialScreen").classList.add("show-special");
+}
+
+function checkSavedUser(){
+  const savedUser = sessionStorage.getItem("pastriesUsername");
+  if(!savedUser) return;
+
+  const lowered = savedUser.toLowerCase();
+
+  if(lowered === specialUser){
+    document.getElementById("lockScreen").classList.add("hidden");
+    showSpecialMode();
+  } else if(allowedUsers.includes(lowered)){
+    document.getElementById("lockScreen").classList.add("hidden");
+    showNormalMode();
+  }
+}
+
+function checkUsername(){
+  const input = document.getElementById("usernameInput");
+  const error = document.getElementById("lockError");
+  const username = input.value.trim().toLowerCase();
+
+  if(username === specialUser){
+    sessionStorage.setItem("pastriesUsername", username);
+    document.getElementById("lockScreen").classList.add("hidden");
+    error.textContent = "";
+    showSpecialMode();
+  } else if(allowedUsers.includes(username)){
+    sessionStorage.setItem("pastriesUsername", username);
+    document.getElementById("lockScreen").classList.add("hidden");
+    error.textContent = "";
+    showNormalMode();
+  } else {
+    error.textContent = "Username not allowed.";
+  }
+}
+
+document.getElementById("usernameInput").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    checkUsername();
+  }
+});
+
+checkSavedUser();
+
+function openMain(){
+  document.getElementById("mainBox").classList.add("show");
+}
+
+function goBack(){
+  document.getElementById("mainBox").classList.remove("show");
+}
+
+function openWhite(){
+  document.getElementById("whiteBox").classList.add("show");
+}
+
+function closeWhite(){
+  document.getElementById("whiteBox").classList.remove("show");
+}
+
+function openFolder(n){
+  const folder = document.getElementById("folder" + n);
+  folder.style.display = "flex";
+  folder.classList.add("show-folder");
+}
+
+function closeFolder(n){
+  const folder = document.getElementById("folder" + n);
+  folder.classList.remove("show-folder");
+  setTimeout(() => {
+    folder.style.display = "none";
+  }, 300);
+}
+
+function viewImage(img){
+  const grid = img.closest(".image-grid");
+  currentImages = Array.from(grid.querySelectorAll("img"));
+  currentIndex = currentImages.indexOf(img);
+
+  document.getElementById("viewer").style.display = "flex";
+  document.getElementById("viewerImg").src = currentImages[currentIndex].src;
+}
+
+function prevImage(){
+  if(currentImages.length === 0) return;
+  currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+  document.getElementById("viewerImg").src = currentImages[currentIndex].src;
+}
+
+function nextImage(){
+  if(currentImages.length === 0) return;
+  currentIndex = (currentIndex + 1) % currentImages.length;
+  document.getElementById("viewerImg").src = currentImages[currentIndex].src;
+}
+
+function closeViewer(){
+  document.getElementById("viewer").style.display = "none";
+}
+
+document.getElementById("viewer").addEventListener("click", function(e){
+  if(e.target.id === "viewer"){
+    closeViewer();
+  }
+});
+
+// Keyboard navigation for image viewer
+document.addEventListener('keydown', function(e) {
+  const viewer = document.getElementById("viewer");
+  if (viewer.style.display === "flex") {
+    if (e.key === "ArrowLeft") prevImage();
+    if (e.key === "ArrowRight") nextImage();
+    if (e.key === "Escape") closeViewer();
+  }
+});
+</script>
+
+</body>
+</html>
